@@ -1,6 +1,9 @@
 from telegram.ext import Updater, CommandHandler
+import os
 
-updater = Updater(token='1945231918:AAGOT70yF4YHAERfdlNRYIuvWbMV37I9yr8', use_context=True)
+TOKEN = '1945231918:AAGOT70yF4YHAERfdlNRYIuvWbMV37I9yr8'
+PORT = int(os.environ.get('PORT', 5000))
+updater = Updater(token=TOKEN, use_context=True)
 dispatcher = updater.dispatcher
 
 
@@ -10,4 +13,7 @@ def start(update, context):
 
 start_handler = CommandHandler('start', start)
 dispatcher.add_handler(start_handler)
-updater.start_polling()
+updater.start_webhook(listen="0.0.0.0",
+                      port=int(PORT),
+                      url_path=TOKEN)
+updater.bot.setWebhook('https://crowsbot.herokuapp.com/' + TOKEN)
